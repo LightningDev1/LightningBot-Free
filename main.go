@@ -70,6 +70,8 @@ func main() {
 		if strings.Contains(err.Error(), "Authentication failed") {
 			utils.Logging.Error("Your token is invalid! Starting setup...")
 			setup()
+			main()
+			return
 		} else {
 			utils.Logging.Error(err)
 		}
