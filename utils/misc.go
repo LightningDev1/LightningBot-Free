@@ -3,6 +3,8 @@ package utils
 import (
 	"os/exec"
 	"runtime"
+	"strconv"
+	"strings"
 )
 
 type MiscUtils struct{}
@@ -63,6 +65,14 @@ func (MiscUtils) OpenURL(url string) error {
 	} else {
 		return exec.Command("xdg-open", url).Start()
 	}
+}
+
+func (MiscUtils) HexToRGB(hex string) (int, int, int) {
+	hex = strings.ReplaceAll(hex, "#", "")
+	r, _ := strconv.ParseInt(hex[0:2], 16, 64)
+	g, _ := strconv.ParseInt(hex[2:4], 16, 64)
+	b, _ := strconv.ParseInt(hex[4:6], 16, 64)
+	return int(r), int(g), int(b)
 }
 
 var Misc = &MiscUtils{}

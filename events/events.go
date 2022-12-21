@@ -12,6 +12,7 @@ type _Events struct {
 
 func (e *_Events) Register() {
 	e.Session.AddHandler(e.OnReady)
+	e.Router.RegisterMiddleware(e.OnCommand)
 }
 
 var Events = &_Events{}
