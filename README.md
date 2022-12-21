@@ -2,7 +2,7 @@
 
 This is the source code of the free version of LightningBot.
 
-<br><br>
+<br>
 
 ## How do i use it?
 
