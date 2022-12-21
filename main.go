@@ -27,7 +27,13 @@ func main() {
 
 	cfg, err := config.Load()
 	if err != nil {
-		cfg = handleConfigLoadError(err)
+		if errors.Is(err, fs.ErrNotExist) {
+			utils.Logging.Info("Config doesn't exist, starting setup...")
+			cfg = setup()
+		} else {
+			utils.Logging.Error("Error loading config:", err)
+			os.Exit(1)
+		}
 	}
 
 	session, _ := discordgo.New(cfg.Token)
@@ -50,6 +56,7 @@ func main() {
 
 	// Register commands and events
 	events.Events.Session = session
+	events.Events.Router = router
 	events.Events.Register()
 
 	commands.Commands.Session = session
@@ -71,17 +78,6 @@ func main() {
 	sc := make(chan os.Signal, 1)
 	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM)
 	<-sc
-}
-
-func handleConfigLoadError(err error) config.Config {
-	if errors.Is(err, fs.ErrNotExist) {
-		utils.Logging.Info("Config doesn't exist, starting setup...")
-		return setup()
-	} else {
-		utils.Logging.Error("Error loading config:", err)
-		os.Exit(1)
-	}
-	return config.Config{}
 }
 
 func setup() config.Config {

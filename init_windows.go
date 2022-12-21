@@ -17,6 +17,7 @@ func init() {
 
 		var consoleMode uint32
 		syscall.GetConsoleMode(stdout, &consoleMode)
+		
 		// ENABLE_VIRTUAL_TERMINAL_PROCESSING
 		consoleMode |= 0x0004
 
