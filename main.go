@@ -1,1 +1,106 @@
 package main
+
+import (
+	"errors"
+	"io/fs"
+	"os"
+	"os/signal"
+	"strings"
+	"syscall"
+
+	"github.com/LightningDev1/LB-Selfbot-Free/commands"
+	"github.com/LightningDev1/LB-Selfbot-Free/config"
+	"github.com/LightningDev1/LB-Selfbot-Free/events"
+	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/dgc"
+	"github.com/LightningDev1/discordgo"
+)
+
+func main() {
+	utils.Console.PrintBanner()
+
+	err := utils.File.CreateDirectories()
+	if err != nil {
+		utils.Logging.Error("Error creating directories:", err)
+		os.Exit(1)
+	}
+
+	cfg, err := config.Load()
+	if err != nil {
+		cfg = handleConfigLoadError(err)
+	}
+
+	session, _ := discordgo.New(cfg.Token)
+
+	router := dgc.Create(&dgc.Router{
+		PrefixFunc: func() []string {
+			cfg, err := config.Load()
+			if err != nil {
+				return []string{"!"}
+			}
+			return []string{cfg.CommandPrefix}
+		},
+		IgnorePrefixCase: true,
+		IsUserAllowedFunc: func(ctx *dgc.Ctx) bool {
+			return ctx.Event.Author.ID == session.State.User.ID
+		},
+		Commands:    []*dgc.Command{},
+		Middlewares: []dgc.Middleware{},
+	})
+
+	// Register commands and events
+	events.Events.Session = session
+	events.Events.Register()
+
+	commands.Commands.Session = session
+	commands.Commands.Router = router
+	commands.Commands.Register()
+
+	router.Initialize(session)
+
+	err = session.Open()
+	if err != nil {
+		if strings.Contains(err.Error(), "Authentication failed") {
+			utils.Logging.Error("Your token is invalid! Starting setup...")
+			setup()
+		} else {
+			utils.Logging.Error(err)
+		}
+	}
+
+	sc := make(chan os.Signal, 1)
+	signal.Notify(sc, syscall.SIGINT, syscall.SIGTERM)
+	<-sc
+}
+
+func handleConfigLoadError(err error) config.Config {
+	if errors.Is(err, fs.ErrNotExist) {
+		utils.Logging.Info("Config doesn't exist, starting setup...")
+		return setup()
+	} else {
+		utils.Logging.Error("Error loading config:", err)
+		os.Exit(1)
+	}
+	return config.Config{}
+}
+
+func setup() config.Config {
+	token := utils.Input.GetInputString("Please enter your Discord token")
+	commandPrefix := utils.Input.GetInputString("Please enter your desired command prefix")
+
+	cfg := config.Config{
+		Token:         token,
+		CommandPrefix: commandPrefix,
+		Embed: config.EmbedConfig{
+			Title:  "LightningBot Free",
+			Footer: "LightningBot Free $VERSION",
+		},
+	}
+
+	err := cfg.Save()
+	if err != nil {
+		utils.Logging.Error("Error saving config:", err)
+		os.Exit(1)
+	}
+	return cfg
+}
