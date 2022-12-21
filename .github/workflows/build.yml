@@ -1,0 +1,117 @@
+name: Build Selfbot
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+  workflow_dispatch:
+
+jobs:
+  build-windows-linux:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.19.3'
+          
+      - name: Setup Golang caches
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-golang-
+      
+      - name: Create directories
+        run: |
+          mkdir ${{ github.workspace }}/executables
+          mkdir ${{ github.workspace }}/executables/windows
+          mkdir ${{ github.workspace }}/executables/windows/386
+          mkdir ${{ github.workspace }}/executables/windows/amd64
+          mkdir ${{ github.workspace }}/executables/linux
+          mkdir ${{ github.workspace }}/executables/linux/386
+          mkdir ${{ github.workspace }}/executables/linux/amd64
+          mkdir ${{ github.workspace }}/executables/linux/arm
+          mkdir ${{ github.workspace }}/executables/linux/arm64
+          mkdir ${{ github.workspace }}/executables/macos
+          mkdir ${{ github.workspace }}/executables/macos/amd64
+          mkdir ${{ github.workspace }}/executables/macos/arm64
+
+      - name: Build for Windows
+        env:
+          GOPROXY: "https://proxy.golang.org"
+          GOOS: "windows"
+        run: |
+          export GOARCH=386
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/windows/386/selfbot.exe
+          export GOARCH=amd64
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/windows/amd64/selfbot.exe
+          
+      - name: Build for Linux
+        env:
+          GOPROXY: "https://proxy.golang.org"
+          GOOS: "linux"
+        run: |
+          export GOARCH=386
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/linux/386/selfbot
+          export GOARCH=amd64
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/linux/amd64/selfbot
+          export GOARCH=arm
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/linux/arm/selfbot
+          export GOARCH=arm64
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/linux/arm64/selfbot
+          
+      - name: Upload builds
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          path: ${{ github.workspace }}/executables
+
+  build-macos:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version: '1.19.3'
+          
+      - name: Setup Golang caches
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cache/go-build
+            ~/go/pkg/mod
+          key: ${{ runner.os }}-golang-${{ hashFiles('**/go.sum') }}
+          restore-keys: |
+            ${{ runner.os }}-golang-
+      
+      - name: Create directories
+        run: |
+          mkdir ${{ github.workspace }}/executables
+          mkdir ${{ github.workspace }}/executables/macos
+          mkdir ${{ github.workspace }}/executables/macos/amd64
+          mkdir ${{ github.workspace }}/executables/macos/arm64
+      
+      - name: Build for macOS
+        env:
+          GOPROXY: "https://proxy.golang.org"
+          GOOS: "darwin"
+        run: |
+          export GOARCH=amd64
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/macos/amd64/selfbot
+          export GOARCH=arm64
+          go build -ldflags "-s -w" -o ${{ github.workspace }}/executables/macos/arm64/selfbot
+      
+      - name: Combine amd64 and arm64
+        run: |
+          lipo -create -output ${{ github.workspace }}/executables/macos/selfbot ${{ github.workspace }}/executables/macos/amd64/selfbot ${{ github.workspace }}/executables/macos/arm64/selfbot
+          rm -rf ${{ github.workspace }}/executables/macos/amd64
+          rm -rf ${{ github.workspace }}/executables/macos/arm64
+          
+      - name: Upload builds
+        uses: actions/upload-artifact@v3.1.0
+        with:
+          path: ${{ github.workspace }}/executables
