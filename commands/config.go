@@ -1,7 +1,7 @@
 package commands
 
 import (
-	"github.com/LightningDev1/LB-Selfbot-Free/config"
+	"github.com/LightningDev1/LightningBot-Free/config"
 	"github.com/LightningDev1/dgc"
 )
 

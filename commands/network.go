@@ -3,10 +3,10 @@ package commands
 import (
 	"fmt"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/api"
-	"github.com/LightningDev1/LB-Selfbot-Free/embed"
-	"github.com/LightningDev1/LB-Selfbot-Free/http"
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/api"
+	"github.com/LightningDev1/LightningBot-Free/embed"
+	"github.com/LightningDev1/LightningBot-Free/http"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 	"github.com/LightningDev1/dgc"
 	"github.com/bitly/go-simplejson"
 )

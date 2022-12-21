@@ -7,7 +7,7 @@ import (
 	"sync"
 	"time"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 )
 
 type Config struct {

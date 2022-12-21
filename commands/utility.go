@@ -7,10 +7,10 @@ import (
 	"runtime"
 	"strings"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/api"
-	"github.com/LightningDev1/LB-Selfbot-Free/constants"
-	"github.com/LightningDev1/LB-Selfbot-Free/embed"
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/api"
+	"github.com/LightningDev1/LightningBot-Free/constants"
+	"github.com/LightningDev1/LightningBot-Free/embed"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 	"github.com/LightningDev1/dgc"
 )
 
@@ -145,7 +145,7 @@ func english(ctx *dgc.Ctx) {
 		_ = ctx.RespondText("An error has occurred: " + translateResult.Error.Error())
 		return
 	}
-	
+
 	embed.NewEmbed().
 		AddField("Source Language", utils.String.Capitalize(constants.LANGUAGES[translateResult.SourceLanguage])).
 		AddField("Original Text", translateResult.Original).

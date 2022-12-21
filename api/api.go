@@ -8,9 +8,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/config"
-	"github.com/LightningDev1/LB-Selfbot-Free/constants"
-	"github.com/LightningDev1/LB-Selfbot-Free/http"
+	"github.com/LightningDev1/LightningBot-Free/config"
+	"github.com/LightningDev1/LightningBot-Free/constants"
+	"github.com/LightningDev1/LightningBot-Free/http"
 	"github.com/bitly/go-simplejson"
 	"github.com/go-ping/ping"
 )
@@ -161,6 +161,6 @@ func CreatePaste(text string) (string, error) {
 	if err != nil {
 		return "", err
 	}
-	
+
 	return "https://paste.lightning-bot.com/" + paste.Get("key").MustString(), nil
 }

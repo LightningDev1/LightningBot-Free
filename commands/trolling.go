@@ -5,7 +5,7 @@ import (
 	"strings"
 	"time"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 	"github.com/LightningDev1/dgc"
 )
 
@@ -48,7 +48,7 @@ func triggertyping(ctx *dgc.Ctx) {
 		_ = ctx.RespondText("Argument <seconds> must be a number.")
 		return
 	}
-	
+
 	channel, success := utils.Discord.GetChannelFromMention(ctx, ctx.Arguments.Get(1))
 	if !success {
 		channel, err = utils.Discord.GetChannel(ctx.Session, ctx.Event.ChannelID)

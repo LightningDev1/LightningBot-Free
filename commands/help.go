@@ -5,9 +5,9 @@ import (
 	"math"
 	"strings"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/constants"
-	"github.com/LightningDev1/LB-Selfbot-Free/embed"
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/constants"
+	"github.com/LightningDev1/LightningBot-Free/embed"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 	"github.com/LightningDev1/dgc"
 )
 
@@ -89,7 +89,7 @@ func renderCommandHelp(router *dgc.Router, command *dgc.Command) *embed.Embed {
 			}
 		}
 	}
-	
+
 	return embed.NewEmbed().
 		SetDescription("Command Help: "+command.Name).
 		AddField("Command Name", command.Name).

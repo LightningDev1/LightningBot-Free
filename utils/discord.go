@@ -4,7 +4,7 @@ import (
 	"bytes"
 	"time"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/http"
+	"github.com/LightningDev1/LightningBot-Free/http"
 	"github.com/LightningDev1/dgc"
 	"github.com/LightningDev1/discordgo"
 )

@@ -1,4 +1,4 @@
-module github.com/LightningDev1/LB-Selfbot-Free
+module github.com/LightningDev1/LightningBot-Free
 
 go 1.19
 

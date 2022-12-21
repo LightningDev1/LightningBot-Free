@@ -3,7 +3,7 @@ package commands
 import (
 	"strings"
 
-	"github.com/LightningDev1/LB-Selfbot-Free/utils"
+	"github.com/LightningDev1/LightningBot-Free/utils"
 	"github.com/LightningDev1/dgc"
 	"github.com/common-nighthawk/go-figure"
 )
