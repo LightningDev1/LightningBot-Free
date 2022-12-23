@@ -83,8 +83,8 @@ func main() {
 }
 
 func setup() config.Config {
-	token := utils.Input.GetInputString("Please enter your Discord token")
-	commandPrefix := utils.Input.GetInputString("Please enter your desired command prefix")
+	token := utils.Input.GetString("Please enter your Discord token")
+	commandPrefix := utils.Input.GetString("Please enter your desired command prefix")
 
 	cfg := config.Config{
 		Token:         token,

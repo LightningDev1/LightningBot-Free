@@ -12,7 +12,7 @@ type InputUtils struct{}
 
 var stdInReader = bufio.NewReader(os.Stdin)
 
-func (InputUtils) GetInputString(prompt string) string {
+func (InputUtils) GetString(prompt string) string {
 	Input.PrintPrompt(prompt)
 
 	input, err := stdInReader.ReadString('\n')
@@ -22,10 +22,6 @@ func (InputUtils) GetInputString(prompt string) string {
 	}
 
 	return strings.TrimSpace(input)
-}
-
-func (InputUtils) GetInputInt(prompt string) int {
-	return 0
 }
 
 func (InputUtils) PrintPrompt(prompt string) {
