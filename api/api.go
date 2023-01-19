@@ -1,16 +1,15 @@
 package api
 
 import (
-	"encoding/json"
 	"fmt"
 	"net"
 	"net/url"
 	"strings"
 	"time"
 
-	"github.com/LightningDev1/LightningBot-Free/config"
 	"github.com/LightningDev1/LightningBot-Free/constants"
 	"github.com/LightningDev1/LightningBot-Free/http"
+	"github.com/LightningDev1/discordgo"
 	"github.com/bitly/go-simplejson"
 	"github.com/go-ping/ping"
 )
@@ -77,16 +76,7 @@ func Translate(text, language string) *TranslateResult {
 	}
 }
 
-func ChangeSettings(settings map[string]interface{}, settingsPath bool) *http.HttpResponse {
-	cfg, err := config.Load()
-	if err != nil {
-		return &http.HttpResponse{Success: false, Error: err}
-	}
-	jsonBytes, err := json.Marshal(settings)
-	if err != nil {
-		return &http.HttpResponse{Success: false, Error: err}
-	}
-
+func ChangeSettings(session *discordgo.Session, settings map[string]any, settingsPath bool) error {
 	settingsUrl := ""
 	if settingsPath {
 		settingsUrl = "https://discord.com/api/v10/users/@me/settings"
@@ -94,7 +84,9 @@ func ChangeSettings(settings map[string]interface{}, settingsPath bool) *http.Ht
 		settingsUrl = "https://discord.com/api/v10/users/@me"
 	}
 
-	return http.Patch(settingsUrl, string(jsonBytes), http.GetDiscordHeaders(cfg.Token))
+	_, err := session.Request("PATCH", settingsUrl, settings)
+
+	return err
 }
 
 func Ping(host string) (time.Duration, error) {

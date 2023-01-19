@@ -182,7 +182,7 @@ func theme(ctx *dgc.Ctx) {
 		return
 	}
 
-	_ = api.ChangeSettings(map[string]interface{}{"theme": theme}, true)
+	_ = api.ChangeSettings(ctx.Session, map[string]any{"theme": theme}, true)
 }
 
 func compact(ctx *dgc.Ctx) {
@@ -192,7 +192,7 @@ func compact(ctx *dgc.Ctx) {
 		return
 	}
 
-	_ = api.ChangeSettings(map[string]interface{}{"message_display_compact": toggle == "on"}, true)
+	_ = api.ChangeSettings(ctx.Session, map[string]any{"message_display_compact": toggle == "on"}, true)
 }
 
 func devmode(ctx *dgc.Ctx) {
@@ -202,5 +202,5 @@ func devmode(ctx *dgc.Ctx) {
 		return
 	}
 
-	_ = api.ChangeSettings(map[string]interface{}{"developer_mode": toggle == "on"}, true)
+	_ = api.ChangeSettings(ctx.Session, map[string]any{"developer_mode": toggle == "on"}, true)
 }

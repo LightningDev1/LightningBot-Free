@@ -95,23 +95,3 @@ func Post(url string, data string, headersList ...map[string]string) *HttpRespon
 func Patch(url string, data string, headersList ...map[string]string) *HttpResponse {
 	return CustomMethodWithData(url, "PATCH", data, headersList...)
 }
-
-func GetDiscordHeaders(token string) map[string]string {
-	return map[string]string{
-		"accept":             "*/*",
-		"accept-encoding":    "",
-		"accept-language":    "en-GB,q=0.9",
-		"cookie":             "__cfduid=d7e8d2784592da39fb3f621664b9aede51620414171; __dcfduid=24a543339247480f9b0bb95c710ce1e6",
-		"referer":            "https://discord.com/",
-		"origin":             "https://discord.com",
-		"sec-fetch-dest":     "empty",
-		"sec-fetch-mode":     "cors",
-		"sec-fetch-site":     "same-origin",
-		"user-agent":         "Mozilla/5.0 (Windows NT 10.0; WOW64) AppleWebKit/537.36 (KHTML, like Gecko) discord/1.0.9003 Chrome/91.0.4472.164 Electron/13.4.0 Safari/537.36",
-		"x-debug-options":    "bugReporterEnabled",
-		"x-discord-locale":   "en-US",
-		"x-super-properties": "eyJvcyI6IldpbmRvd3MiLCJicm93c2VyIjoiRGlzY29yZCBDbGllbnQiLCJyZWxlYXNlX2NoYW5uZWwiOiJzdGFibGUiLCJjbGllbnRfdmVyc2lvbiI6IjEuMC45MDAzIiwib3NfdmVyc2lvbiI6IjEwLjAuMjIwMDAiLCJvc19hcmNoIjoieDY0Iiwic3lzdGVtX2xvY2FsZSI6ImVuLUdCIiwiY2xpZW50X2J1aWxkX251bWJlciI6MTA5MTkwLCJjbGllbnRfZXZlbnRfc291cmNlIjpudWxsfQ==",
-		"content-type":       "application/json",
-		"authorization":      token,
-	}
-}
