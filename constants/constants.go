@@ -1,7 +1,7 @@
 package constants
 
 var (
-	VERSION                = "1.0.0"
+	VERSION                = "0.1.0"
 	LANGUAGE_SPECIAL_CASES = map[string]string{
 		"ee": "et",
 	}
