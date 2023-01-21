@@ -125,21 +125,27 @@ func GetLocalIP() string {
 func GetMacAddress() string {
 	currentIP := GetLocalIP()
 	interfaces, _ := net.Interfaces()
+
 	for _, interf := range interfaces {
 		addrs, err := interf.Addrs()
 		if err != nil {
 			continue
 		}
+
 		for _, addr := range addrs {
-			if strings.Contains(addr.String(), currentIP) {
-				netInterface, err := net.InterfaceByName(interf.Name)
-				if err != nil {
-					continue
-				}
-				return strings.ToUpper(netInterface.HardwareAddr.String())
+			if !strings.Contains(addr.String(), currentIP) {
+				continue
 			}
+
+			netInterface, err := net.InterfaceByName(interf.Name)
+			if err != nil {
+				continue
+			}
+			
+			return strings.ToUpper(netInterface.HardwareAddr.String())
 		}
 	}
+
 	return "Error"
 }
 
