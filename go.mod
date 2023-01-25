@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/LightningDev1/dgc v1.1.3
-	github.com/LightningDev1/discordgo v0.26.4
+	github.com/LightningDev1/discordgo v0.26.5
 	github.com/bitly/go-simplejson v0.5.0
 	github.com/common-nighthawk/go-figure v0.0.0-20210622060536-734e95fb86be
 	github.com/go-ping/ping v1.1.0
