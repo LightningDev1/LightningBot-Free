@@ -38,6 +38,8 @@ func main() {
 
 	session, _ := discordgo.New(cfg.Token)
 
+	session.SetIdentify(discordgo.IdentifyWeb)
+
 	router := dgc.Create(&dgc.Router{
 		PrefixFunc: func() []string {
 			cfg, err := config.Load()
